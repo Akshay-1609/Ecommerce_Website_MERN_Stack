@@ -19,13 +19,13 @@ const productSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
-    Image:[
+    images:[
         {
             public_id:{
                 type:String,
                 required:true
             },
-            url:{
+            url:{ 
                 type:String,
                 required:true
             }
@@ -60,5 +60,11 @@ const productSchema = new mongoose.Schema({
             require:true
             }
         }
-    ]
+    ],
+    createdAt:{
+        type:Date,
+        default:Date.now
+    }
 })
+
+module.exports = mongoose.model("product",productSchema)
