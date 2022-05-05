@@ -1,42 +1,46 @@
 const { json } = require("express/lib/response");
 
 class ApiFeatures {
-    constructor(query, querystr){
-         this.query = query;
-         this.querystr = querystr
-    }
+  constructor(query, querystr) {
+    this.query = query;
+    this.querystr = querystr;
+  }
 
-    search(){
-       
-        const keyword = this.querystr.keyword?{
-            name:{
-                $regex: this.querystr.keyword,
-                $options:"i"
-            }
-        }:{};
-        
-        console.log(keyword);
+  search() {
+    const keyword = this.querystr.keyword
+      ? {
+          name: {
+            $regex: this.querystr.keyword,
+            $options: "i",
+          },
+        }
+      : {};
+    this.query = this.query.find({ ...keyword });
+    return this;
+  }
 
-        this.query = this.query.find({ ...keyword });
-        return this;
-    }
-
-    filter(){
-        const queryCopy = {...this.querystr}
+  filter() {
+    const queryCopy = { ...this.querystr };
 
     // Remove some fields for category
-    const removeFields = ["keyword","page","limit"];
-    removeFields.forEach(key=>delete queryCopy[key]);
+    const removeFields = ["keyword", "page", "limit"];
+    removeFields.forEach((key) => delete queryCopy[key]);
 
     // Filter for Price & Rating
     let querystr = JSON.stringify(queryCopy);
-    querystr= querystr.replace(/\b(gt|gte|lt|gte)\b/g,key=>`$${key}`);
-
+    querystr = querystr.replace(/\b(gt|gte|lt|gte)\b/g, (key) => `$${key}`);
 
     this.query = this.query.find(JSON.parse(querystr));
-    return this
-    }
-     
-};
+    return this;
+  }
+
+
+  pagination(resultPerPage){
+      const currentPage = Number(this.querystr.page) || 1;
+      const skip = resultPerPage *(currentPage-1);
+      this.query = this.query.limit(resultPerPage).skip(skip);
+      return this;
+  }
+}
 
 module.exports = ApiFeatures;
