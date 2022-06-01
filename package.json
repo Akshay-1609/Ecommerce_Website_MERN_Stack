@@ -20,5 +20,13 @@
     "mongoose": "^6.3.1",
     "nodemailer": "^6.7.5",
     "validator": "^13.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-1609/Ecommerce_Website_MERN_Stack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Akshay-1609/Ecommerce_Website_MERN_Stack/issues"
+  },
+  "homepage": "https://github.com/Akshay-1609/Ecommerce_Website_MERN_Stack#readme"
 }
